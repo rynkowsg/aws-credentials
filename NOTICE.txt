@@ -1,0 +1,21 @@
+aws-credentials
+NOTICE file for the aws-credentials project.
+
+Copyright (c) 2025 Greg Rynkowski
+SPDX-License-Identifier: Apache-2.0
+
+**********************
+THIRD PARTY COMPONENTS
+**********************
+
+This software includes the following third-party components:
+
+- aws-api - https://github.com/cognitect-labs/aws-api
+- AWS SDK for Java - https://github.com/aws/aws-sdk-java
+- AWS SDK for Java 2.0 - https://github.com/aws/aws-sdk-java-v2
+
+The licenses for these third-party components are included in LICENSE.txt.
+
+Additional required notices:
+- AWS SDK for Java: https://github.com/aws/aws-sdk-java/blob/master/NOTICE.txt
+- AWS SDK for Java 2.0: https://github.com/aws/aws-sdk-java-v2/blob/master/NOTICE.txt

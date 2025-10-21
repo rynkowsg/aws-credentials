@@ -1,0 +1,10 @@
+;;
+;; Warning!
+;; Do not rely on this file for build nor as a dependency.
+;; The sole purpose of deps.edn fields in this repo, is to assist Cursive
+;; that doesn't handle Leiningen with lein-modules.
+;;
+{:paths ["lib/main/src"]
+
+ :deps {com.amazonaws/aws-java-sdk-core {:mvn/version "1.12.792"}
+        com.cognitect.aws/api {:mvn/version "0.8.774"}}}

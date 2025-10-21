@@ -1,0 +1,43 @@
+{:deps {;; sorted
+        pl.rynkowski.clj-gr/bb #:git{:url "https://github.com/rynkowsg/clj-gr.git" :tag "v0.0.12" :sha "05be32e01c53aedac4248ba03bb7703dc030c49a" :deps/root "lib/bb"}}
+
+ :tasks {:requires (#_:sorted
+                    [pl.rynkowski.clj-gr.bb :refer [print-exec]])
+
+         tool:antq (print-exec '(clojure "-M:tool/antq") *command-line-args*)
+         tool:cljfmt (print-exec '(clojure "-M:tool/cljfmt -m cljfmt.main") *command-line-args*)
+
+         deps (shell "bb tool:antq")
+         deps:upgrade (shell "bb tool:antq --upgrade")
+
+         lint {:depends [lint:circleci lint:yml lint:clj]}
+         lint:circleci (shell "circleci config validate")
+         lint:clj (shell "clj-kondo --lint . --parallel --copy-configs --config-dir .clj-kondo --skip-lint .clj-kondo/imports")
+         lint:yml (shell "yamlfmt --lint .")
+         lint:yml:fix (shell "yamlfmt .")
+
+         fmt (shell "bb tool:cljfmt fix")
+         fmt:check (shell "bb tool:cljfmt check")
+
+         ver:snap:patch (print-exec '(shell "lein bump-snapshot :patch"))
+         ver:snap:minor (print-exec '(shell "lein bump-snapshot :minor"))
+         ver:snap:major (print-exec '(shell "lein bump-snapshot :major"))
+         ver:snap:alpha (print-exec '(shell "lein bump-snapshot :alpha"))
+         ver:snap:beta (print-exec '(shell "lein bump-snapshot :beta"))
+         ver:snap:rc (print-exec '(shell "lein bump-snapshot :rc"))
+         ver:stable (print-exec '(shell "lein mark-stable"))
+         pom (print-exec '(shell "lein pom"))
+         commit (print-exec '(shell "lein commit"))
+         commit:only (print-exec '(shell "lein commit:only"))
+         deploy:local (print-exec '(shell "lein deploy:local"))
+         deploy:snapshot (print-exec '(shell "lein deploy:sonatype-snapshots"))
+         deploy:release (do (print-exec '(shell "lein deploy:clojars"))
+                            (print-exec '(shell "lein deploy:sonatype-releases")))
+         ;; Instruction:
+         ;; - bump new version snapshot
+         ;; - mark as stable with `ver:stable`
+         ;; - update POM files
+         ;; - commit
+         ;; - deploy (maybe first locally, then snapshot & release)
+
+         #_:tasks}}

@@ -1,0 +1,27 @@
+;;
+;; Warning!
+;; Do not rely on this file for build nor as a dependency.
+;; It is used here for two reasons:
+;; - assist Cursive that doesn't handle Leiningen with lein-modules,
+;; - as a tools aliases reference point.
+;;
+
+{:deps {pl.rynkowski.awscredentials/aws-api-extras {:local/root "./aws-api-extras"}
+        pl.rynkowski.awscredentials/aws-java-sdk-v1 {:local/root "./aws-java-sdk-v1"}
+        pl.rynkowski.awscredentials/aws-java-sdk-v2 {:local/root "./aws-java-sdk-v2"}
+        pl.rynkowski.awscredentials/faraday-extras {:local/root "./faraday-extras"}}
+
+ :aliases {:tool/antq
+           {:replace-paths []
+            :replace-deps {com.github.liquidz/antq ^:antq/exclude {:mvn/version "2.10.1241"}
+                           org.slf4j/slf4j-nop {:mvn/version "2.0.17"}}
+            :main-opts ["-m" "antq.core"]}
+
+           :tool/antq:latest
+           {:replace-paths []
+            :replace-deps {com.github.liquidz/antq {:mvn/version "2.11.1276"}
+                           org.slf4j/slf4j-nop {:mvn/version "2.0.17"}}
+            :main-opts ["-m" "antq.core"]}
+
+           :tool/cljfmt
+           {:replace-deps {dev.weavejester/cljfmt {:mvn/version "0.15.1"}}}}}

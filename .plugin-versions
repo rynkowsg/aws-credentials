@@ -1,0 +1,9 @@
+# plugin-name        git-url                                                    git-ref (hash, tag, or branch)
+asdf-plugin-manager  https://github.com/asdf-community/asdf-plugin-manager.git  f1cc739
+babashka             https://github.com/pitch-io/asdf-babashka.git              3c26394
+circleci-cli         https://github.com/ucpr/asdf-circleci-cli.git              3a52b5e
+clj-kondo            https://github.com/rynkowsg/asdf-clj-kondo.git             6c56b6a
+clojure              https://github.com/halcyon/asdf-clojure.git                01fbe94
+java                 https://github.com/halcyon/asdf-java.git                   98c31c3
+lein                 https://github.com/miorimmax/asdf-lein.git                 b3ea702
+yamlfmt              https://github.com/mise-plugins/asdf-yamlfmt.git           c5760c1

@@ -1,0 +1,4 @@
+{:paths ["lib/main/src"]
+ :deps {com.cognitect.aws/api {:mvn/version "0.8.774"}
+        com.cognitect.aws/endpoints {:mvn/version "871.2.35.10"} ;; https://github.com/cognitect-labs/aws-api/blob/main/latest-releases.edn
+        com.cognitect.aws/sts {:mvn/version "871.2.32.2" :aws/serviceFullName "AWS Security Token Service"}}}

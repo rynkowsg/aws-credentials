@@ -1,0 +1,29 @@
+<component name="ProjectCodeStyleConfiguration">
+  <code_scheme name="Project" version="173">
+    <option name="AUTODETECT_INDENTS" value="false" />
+    <ClojureCodeStyleSettings>
+      <option name="alignMapValues" value="false" />
+      <option name="alignReaderConditionals" value="false" />
+      <option name="commentAlignColumn" value="0" />
+      <option name="defaultOnlyIndent" value="true" />
+      <option name="indentCustomisations">
+        <map>
+          <entry key="clojure.core/-&gt;" value="1000" />
+          <entry key="clojure.core/-&gt;&gt;" value="1000" />
+          <entry key="clojure.core/as-&gt;" value="-1" />
+          <entry key="clojure.core/assert" value="1000" />
+          <entry key="clojure.core/assoc" value="1" />
+          <entry key="clojure.core/cond-&gt;" value="1" />
+          <entry key="clojure.core/merge" value="1000" />
+          <entry key="clojure.core/or" value="1000" />
+          <entry key="clojure.core/some" value="0" />
+          <entry key="clojure.core/some-&gt;" value="1000" />
+          <entry key="clojure.core/some-&gt;&gt;" value="1000" />
+          <entry key="taoensso.faraday/query" value="1000" />
+          <entry key="taoensso.faraday/scan" value="1000" />
+          <entry key="taoensso.faraday/update-item" value="1000" />
+        </map>
+      </option>
+    </ClojureCodeStyleSettings>
+  </code_scheme>
+</component>

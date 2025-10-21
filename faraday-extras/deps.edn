@@ -1,0 +1,11 @@
+;;
+;; Warning!
+;; Do not rely on this file for build nor as a dependency.
+;; The sole purpose of deps.edn fields in this repo, is to assist Cursive
+;; that doesn't handle Leiningen with lein-modules.
+;;
+{:paths ["lib/main/src"]
+
+ :deps {com.taoensso/faraday {:mvn/version "1.12.3"}
+        pl.rynkowski.awscredentials/aws-java-sdk-v1 {:local/root "../aws-java-sdk-v1"}
+        pl.rynkowski.awscredentials/aws-api-extras {:local/root "../aws-api-extras"}}}

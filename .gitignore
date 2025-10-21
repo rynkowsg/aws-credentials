@@ -1,0 +1,21 @@
+# JetBrains IDEs
+/.idea/*
+!/.idea/codeStyles/*
+!/.idea/dictionaries/*
+!/.idea/repl-commands.xml
+!/.idea/runConfigurations/
+!/.idea/ClojureProjectResolveSettings.xml
+*.iml
+
+# Clojure
+.cpcache/
+.nrepl-port
+target/
+# clj-kondo
+**/.clj-kondo/.cache
+# REBL
+**/.rebl/prefs.edn
+# Leiningen
+.lein-failures
+.lein-repl-history
+pom.xml.asc

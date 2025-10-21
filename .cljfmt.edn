@@ -1,0 +1,46 @@
+{;; Source: https://gist.github.com/rynkowsg/60f68b32a82f52bfef48a10a285ca8a0
+
+ ;; https://github.com/weavejester/cljfmt#formatting-options
+ ;; https://github.com/weavejester/cljfmt/blob/master/cljfmt/resources/cljfmt/indents/clojure.clj
+ :alias-map {}
+ :file-pattern #re "\\.(clj[csx]?|edn|bb)$"
+ :extra-indents {#_:sorted
+                 -> [[:inner 1]]
+                 ->> [[:inner 1]]
+                 >def [[:inner 0]]
+                 >defn [[:inner 0]]
+                 >defn- [[:inner 0]]
+                 as-> [[:block 2]]
+                 clojure.core/-> [[:block 1]]
+                 clojure.core/->> [[:block 1]]
+                 com.fulcrologic.guardrails.core/>def [[:inner 0]]
+                 com.fulcrologic.guardrails.core/>defn [[:inner 0]]
+                 com.fulcrologic.guardrails.core/>defn- [[:inner 0]]
+                 comment [[:inner 0]]
+                 cond-> [[:block 1]]
+                 cond->> [[:block 1]]
+                 crypticbutter.snoop/>defn [[:inner 0]]
+                 crypticbutter.snoop/>defn- [[:inner 0]]
+                 pl.rynkowski.clj-gr.aws-api.client.api/invoke [[:block 1]]
+                 pl.rynkowski.clj-gr.aws-api.client.api/invoke! [[:block 1]]
+                 pl.rynkowski.lib.aws.client.api/invoke [[:block 1]]
+                 pl.rynkowski.lib.aws.client.api/invoke! [[:block 1]]
+                 tests [[:block 1]] ;; hyperfiddle.rcf/tests, same as testing
+
+                 ;; Default behavior:
+                 ;; cljfmt aligns all new lines under the second element in the form.
+                 ;;
+                 ;; [:block k] rule:
+                 ;; Use the default indentation until argument k, then use inner indentation if that argument begins a line.
+
+                 #_:extra-indents}
+
+ :function-arguments-indentation :zprint
+ :indentation? true
+ :indent-line-comments? true
+ :insert-missing-whitespace? true
+ :remove-consecutive-blank-lines? true
+ :remove-multiple-non-indenting-spaces? true
+ :remove-surrounding-whitespace? true
+ :remove-trailing-whitespace? true
+ :sort-ns-references? true}

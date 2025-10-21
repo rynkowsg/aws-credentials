@@ -1,0 +1,23 @@
+# https://github.com/asdf-community/asdf-plugin-manager/releases
+asdf-plugin-manager 1.5.0
+
+# https://github.com/babashka/babashka/releases
+babashka 1.12.208
+
+# https://github.com/CircleCI-Public/circleci-cli/releases
+circleci-cli 0.1.33163
+
+# https://github.com/clj-kondo/clj-kondo/releases
+clj-kondo 2025.09.22
+
+# https://github.com/clojure/brew-install/releases
+clojure 1.12.3.1577
+
+# https://github.com/corretto/corretto-21/releases
+java corretto-21.0.8.9.1
+
+# https://codeberg.org/leiningen/leiningen/src/branch/main/NEWS.md
+lein 2.12.0
+
+# https://github.com/google/yamlfmt/releases
+yamlfmt 0.17.2

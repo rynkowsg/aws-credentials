@@ -1,0 +1,17 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="nREPL adapter-for-java-v1-from-cognitect" type="ClojureREPL" factoryName="Remote" activateToolWindowBeforeRun="false">
+    <module name="java-v1-from-cognitect" />
+    <setting name="displayName" value="nREPL adapter-for-java-v1-from-cognitect" />
+    <setting name="host" value="" />
+    <setting name="port" value="0" />
+    <setting name="replType" value="NREPL" />
+    <setting name="configType" value="PORT_FILE" />
+    <setting name="replPortFileType" value="STANDARD" />
+    <setting name="customPortFile" value="" />
+    <setting name="fixLineNumbers" value="false" />
+    <setting name="useHeartbeat" value="true" />
+    <setting name="focusEditor" value="false" />
+    <setting name="urlFile" value="" />
+    <method v="2" />
+  </configuration>
+</component>

@@ -33,7 +33,9 @@
                                         :releases false
                                         :snapshots true
                                         :creds :gpg}]
-                 ["local" "file:///tmp/local-repo/"]]
+                 ["local" {:url "file:///tmp/local-repo/"
+                           :releases false
+                           :snapshots true}]]
   :deploy-repositories [["releases" "sonatype-releases"]
                         ["snapshots" "sonatype-snapshots"]]
   :managed-dependencies [;; sorted

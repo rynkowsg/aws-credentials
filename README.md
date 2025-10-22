@@ -5,19 +5,19 @@
 Add the following dependency to your deps.edn file:
 
 ```clojure
-pl.rynkowski.awscredentials/aws-java-sdk-v1 {:mvn/version "0.1.0"}
-pl.rynkowski.awscredentials/aws-java-sdk-v2 {:mvn/version "0.1.0"}
-pl.rynkowski.awscredentials/aws-api-extras {:mvn/version "0.1.0"}
-pl.rynkowski.awscredentials/faraday-extras {:mvn/version "0.1.0"}
+pl.rynkowski.awscredentials/aws-java-sdk-v1 {:mvn/version "0.1.1"}
+pl.rynkowski.awscredentials/aws-java-sdk-v2 {:mvn/version "0.1.1"}
+pl.rynkowski.awscredentials/aws-api-extras {:mvn/version "0.1.1"}
+pl.rynkowski.awscredentials/faraday-extras {:mvn/version "0.1.1"}
 ```
 
 Or to your Leiningen project file:
 
 ```clojure
-[pl.rynkowski.awscredentials/aws-java-sdk-v1 "0.1.0"]
-[pl.rynkowski.awscredentials/aws-java-sdk-v2 "0.1.0"]
-[pl.rynkowski.awscredentials/aws-api-extras "0.1.0"]
-[pl.rynkowski.awscredentials/faraday-extras "0.1.0"]
+[pl.rynkowski.awscredentials/aws-java-sdk-v1 "0.1.1"]
+[pl.rynkowski.awscredentials/aws-java-sdk-v2 "0.1.1"]
+[pl.rynkowski.awscredentials/aws-api-extras "0.1.1"]
+[pl.rynkowski.awscredentials/faraday-extras "0.1.1"]
 ```
 
 List of artifacts:

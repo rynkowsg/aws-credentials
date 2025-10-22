@@ -1,4 +1,4 @@
-(defproject pl.rynkowski.awscredentials/suite "0.1.0"
+(defproject pl.rynkowski.awscredentials/suite "0.1.1"
   ;; Required by Sonatype OSS’ (more: https://leiningen.org/deploy.html#deploying-to-maven-central)
   :description "Adapters for interoperability between AWS Java SDK v1, v2, and Cognitect AWS API credentials providers."
   :url "https://github.com/rynkowsg/aws-credentials"
@@ -40,10 +40,10 @@
                         ["snapshots" "sonatype-snapshots"]]
   :managed-dependencies [;; sorted
                          [org.clojure/clojure "1.12.3"]
-                         [pl.rynkowski.awscredentials/aws-api-extras "0.1.0"]
-                         [pl.rynkowski.awscredentials/aws-java-sdk-v1 "0.1.0"]
-                         [pl.rynkowski.awscredentials/aws-java-sdk-v2 "0.1.0"]
-                         [pl.rynkowski.awscredentials/faraday-extras "0.1.0"]]
+                         [pl.rynkowski.awscredentials/aws-api-extras "0.1.1"]
+                         [pl.rynkowski.awscredentials/aws-java-sdk-v1 "0.1.1"]
+                         [pl.rynkowski.awscredentials/aws-java-sdk-v2 "0.1.1"]
+                         [pl.rynkowski.awscredentials/faraday-extras "0.1.1"]]
   :plugins [;; sorted
             [lein-file-replace "0.1.0"] ;; https://github.com/jcrossley3/lein-file-replace/tags
             [lein-modules "0.3.11"] ;; https://github.com/jcrossley3/lein-modules/tags
@@ -69,8 +69,7 @@
              :test {:modules {:subprocess "lein"}}
              ;;
              :release/bump-snapshot {:release-tasks
-                                     [;["vcs" "assert-committed"]
-                                      ["change" "version" "leiningen.release/bump-version"]
+                                     [["change" "version" "leiningen.release/bump-version"]
                                       ["change" ":managed-dependencies:pl.rynkowski.awscredentials/aws-api-extras" "leiningen.release/bump-version"]
                                       ["change" ":managed-dependencies:pl.rynkowski.awscredentials/aws-java-sdk-v1" "leiningen.release/bump-version"]
                                       ["change" ":managed-dependencies:pl.rynkowski.awscredentials/aws-java-sdk-v2" "leiningen.release/bump-version"]
@@ -82,8 +81,7 @@
                                       #_:release-tasks-end]
                                      #_:profile-end}
              :release/mark-stable {:release-tasks
-                                   [;["vcs" "assert-committed"]
-                                    ["change" "version" "leiningen.release/bump-version" "release"]
+                                   [["change" "version" "leiningen.release/bump-version" "release"]
                                     ["change" ":managed-dependencies:pl.rynkowski.awscredentials/aws-api-extras" "leiningen.release/bump-version" "release"]
                                     ["change" ":managed-dependencies:pl.rynkowski.awscredentials/aws-java-sdk-v1" "leiningen.release/bump-version" "release"]
                                     ["change" ":managed-dependencies:pl.rynkowski.awscredentials/aws-java-sdk-v2" "leiningen.release/bump-version" "release"]
@@ -100,8 +98,7 @@
                                     #_:release-tasks-end]
                                    #_:profile-end}
              :release/commit {:release-tasks
-                              [;; require
-                               ["vcs" "commit" "chore(release): bump version to %s"]
+                              [["vcs" "commit" "chore(release): bump version to %s"]
                                ["vcs" "tag"]
                                ["vcs" "push"]
                                #_:release-tasks-end]

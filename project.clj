@@ -23,19 +23,19 @@
   :repositories [;; https://central.sonatype.org/publish/publish-portal-maven/
                  ;; https://central.sonatype.com/repository/maven-snapshots/
                  ["clojars" {:url "https://repo.clojars.org"
-                             :snapshots false
+                             :snapshots true
                              :releases true}]
-                 ["sonatype-releases" {:url "https://central.sonatype.com"
+                 ["sonatype-releases" {:url "https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2"
                                        :snapshots false
                                        :releases true
                                        :creds :gpg}]
                  ["sonatype-snapshots" {:url "https://central.sonatype.com/repository/maven-snapshots/"
-                                        :releases false
                                         :snapshots true
+                                        :releases false
                                         :creds :gpg}]
                  ["local" {:url "file:///tmp/local-repo/"
-                           :releases false
-                           :snapshots true}]]
+                           :snapshots true
+                           :releases true}]]
   :deploy-repositories [["releases" "sonatype-releases"]
                         ["snapshots" "sonatype-snapshots"]]
   :managed-dependencies [;; sorted

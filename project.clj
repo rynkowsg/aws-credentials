@@ -8,7 +8,7 @@
   :scm {:name "git"
         :connection "scm:git:git://github.com/rynkowsg/aws-credentials.git"
         :developerConnection "scm:git:ssh://github.com/rynkowsg/aws-credentials.git"
-        :url "https://github.com/rynkowsg/aws-credentials/tree/main"}
+        :url "https://github.com/rynkowsg/aws-credentials"}
   :pom-addition '([:developers
                    [:developer
                     [:id "rynkowsg"]

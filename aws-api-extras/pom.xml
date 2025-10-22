@@ -7,7 +7,7 @@
   <version>0.1.1</version>
   <name>aws-api-extras</name>
   <description>Extra utils for aws-api related to CredentialsProvider.</description>
-  <url>https://github.com/rynkowsg/aws-credentials/tree/main/aws-api-extras</url>
+  <url>https://github.com/rynkowsg/aws-credentials</url>
   <licenses>
     <license>
       <name>Apache License, Version 2.0</name>
@@ -16,7 +16,7 @@
     </license>
   </licenses>
   <scm>
-    <url>https://github.com/rynkowsg/aws-credentials/tree/main/aws-api-extras</url>
+    <url>https://github.com/rynkowsg/aws-credentials</url>
     <connection>scm:git:git://github.com/rynkowsg/aws-credentials.git</connection>
     <developerConnection>scm:git:ssh://github.com/rynkowsg/aws-credentials.git</developerConnection>
   </scm>

@@ -2,7 +2,7 @@
 ;; Copyright (c) 2025 Greg Rynkowski
 ;; SPDX-License-Identifier: Apache-2.0
 
-(ns pl.rynkowski.aws-credentials.aws-api-extras
+(ns pl.rynkowski.awscredentials.aws-api-extras
   (:require
     [clojure.java.io :as io]
     [clojure.tools.logging :as log]

@@ -1,7 +1,7 @@
 ;; Copyright (c) 2025 Greg Rynkowski
 ;; SPDX-License-Identifier: Apache-2.0
 
-(ns pl.rynkowski.aws-credentials.java-sdk-v1
+(ns pl.rynkowski.awscredentials.java-sdk-v1
   (:require
     [cognitect.aws.credentials :refer [CredentialsProvider fetch]])
   (:import

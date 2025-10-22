@@ -1,10 +1,10 @@
 ;; Copyright (c) 2025 Greg Rynkowski
 ;; SPDX-License-Identifier: Apache-2.0
 
-(ns pl.rynkowski.aws-credentials.faraday-extras
+(ns pl.rynkowski.awscredentials.faraday-extras
   (:require
-    [pl.rynkowski.aws-credentials.java-sdk-v1 :as java-sdk-v1]
-    [pl.rynkowski.aws-credentials.aws-api-extras :as credse]
+    [pl.rynkowski.awscredentials.java-sdk-v1 :as java-sdk-v1]
+    [pl.rynkowski.awscredentials.aws-api-extras :as credse]
     [cognitect.aws.credentials :as creds :refer [CredentialsProvider]]))
 
 (defn client

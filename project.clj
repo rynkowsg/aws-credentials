@@ -1,4 +1,4 @@
-(defproject pl.rynkowski.awscredentials/suite "0.1.1"
+(defproject pl.rynkowski.awscredentials/suite "0.1.2-SNAPSHOT"
   ;; Required by Sonatype OSS’ (more: https://leiningen.org/deploy.html#deploying-to-maven-central)
   :description "Adapters for interoperability between AWS Java SDK v1, v2, and Cognitect AWS API credentials providers."
   :url "https://github.com/rynkowsg/aws-credentials"
@@ -40,10 +40,10 @@
                         ["snapshots" "sonatype-snapshots"]]
   :managed-dependencies [;; sorted
                          [org.clojure/clojure "1.12.3"]
-                         [pl.rynkowski.awscredentials/aws-api-extras "0.1.1"]
-                         [pl.rynkowski.awscredentials/aws-java-sdk-v1 "0.1.1"]
-                         [pl.rynkowski.awscredentials/aws-java-sdk-v2 "0.1.1"]
-                         [pl.rynkowski.awscredentials/faraday-extras "0.1.1"]]
+                         [pl.rynkowski.awscredentials/aws-api-extras "0.1.2-SNAPSHOT"]
+                         [pl.rynkowski.awscredentials/aws-java-sdk-v1 "0.1.2-SNAPSHOT"]
+                         [pl.rynkowski.awscredentials/aws-java-sdk-v2 "0.1.2-SNAPSHOT"]
+                         [pl.rynkowski.awscredentials/faraday-extras "0.1.2-SNAPSHOT"]]
   :plugins [;; sorted
             [lein-file-replace "0.1.0"] ;; https://github.com/jcrossley3/lein-file-replace/tags
             [lein-modules "0.3.11"] ;; https://github.com/jcrossley3/lein-modules/tags

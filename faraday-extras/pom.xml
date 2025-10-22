@@ -4,7 +4,7 @@
   <groupId>pl.rynkowski.awscredentials</groupId>
   <artifactId>faraday-extras</artifactId>
   <packaging>jar</packaging>
-  <version>0.1.1</version>
+  <version>0.1.2-SNAPSHOT</version>
   <name>faraday-extras</name>
   <description>Extra utils for aws-api related to CredentialsProvider.</description>
   <url>https://github.com/rynkowsg/aws-credentials</url>
@@ -99,22 +99,22 @@
       <dependency>
         <groupId>pl.rynkowski.awscredentials</groupId>
         <artifactId>aws-api-extras</artifactId>
-        <version>0.1.1</version>
+        <version>0.1.2-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>pl.rynkowski.awscredentials</groupId>
         <artifactId>aws-java-sdk-v1</artifactId>
-        <version>0.1.1</version>
+        <version>0.1.2-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>pl.rynkowski.awscredentials</groupId>
         <artifactId>aws-java-sdk-v2</artifactId>
-        <version>0.1.1</version>
+        <version>0.1.2-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>pl.rynkowski.awscredentials</groupId>
         <artifactId>faraday-extras</artifactId>
-        <version>0.1.1</version>
+        <version>0.1.2-SNAPSHOT</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

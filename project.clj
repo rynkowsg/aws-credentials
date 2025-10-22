@@ -69,7 +69,7 @@
              :test {:modules {:subprocess "lein"}}
              ;;
              :release/bump-snapshot {:release-tasks
-                                     [["vcs" "assert-committed"]
+                                     [;["vcs" "assert-committed"]
                                       ["change" "version" "leiningen.release/bump-version"]
                                       ["change" ":managed-dependencies:pl.rynkowski.awscredentials/aws-api-extras" "leiningen.release/bump-version"]
                                       ["change" ":managed-dependencies:pl.rynkowski.awscredentials/aws-java-sdk-v1" "leiningen.release/bump-version"]
@@ -82,7 +82,7 @@
                                       #_:release-tasks-end]
                                      #_:profile-end}
              :release/mark-stable {:release-tasks
-                                   [["vcs" "assert-committed"]
+                                   [;["vcs" "assert-committed"]
                                     ["change" "version" "leiningen.release/bump-version" "release"]
                                     ["change" ":managed-dependencies:pl.rynkowski.awscredentials/aws-api-extras" "leiningen.release/bump-version" "release"]
                                     ["change" ":managed-dependencies:pl.rynkowski.awscredentials/aws-java-sdk-v1" "leiningen.release/bump-version" "release"]
@@ -106,6 +106,7 @@
                                ["vcs" "push"]
                                #_:release-tasks-end]
                               #_:profile-end}
-             :release/deploy {:release-tasks [["jar"]
+             :release/deploy {:release-tasks [["vcs" "assert-committed"]
+                                              ["jar"]
                                               ["deploy"]]}}
   #_:project)

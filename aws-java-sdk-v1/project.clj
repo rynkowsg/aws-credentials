@@ -13,8 +13,6 @@
                              :repositories
                              :deploy-repositories
                              :managed-dependencies]}
-  :url "https://github.com/rynkowsg/aws-credentials/tree/main/aws-java-sdk-v1"
-  :scm {:url "https://github.com/rynkowsg/aws-credentials/tree/main/aws-java-sdk-v1"}
 
   :source-paths ["lib/main/src"]
   :dependencies [[com.amazonaws/aws-java-sdk-core "1.12.792"]

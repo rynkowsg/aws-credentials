@@ -19,3 +19,6 @@ target/
 .lein-failures
 .lein-repl-history
 pom.xml.asc
+
+# local maven repo
+dist/

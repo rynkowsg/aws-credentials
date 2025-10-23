@@ -1,5 +1,18 @@
 (defproject pl.rynkowski.awscredentials/suite "0.1.2-SNAPSHOT"
-  ;; Required by Sonatype OSS’ (more: https://leiningen.org/deploy.html#deploying-to-maven-central)
+  ;;
+  ;; PLUGINS
+  ;;
+  :plugins [;; sorted
+            [lein-file-replace "0.1.0"] ;; https://github.com/jcrossley3/lein-file-replace/tags
+            [lein-modules "0.3.11"] ;; https://github.com/jcrossley3/lein-modules/tags
+            [lein-pprint "1.3.2"]]
+  :modules {:subprocess nil}
+
+  ;;
+  ;; POM required data
+  ;;
+  ;; - https://central.sonatype.org/publish/requirements
+  ;; - https://leiningen.org/deploy.html#deploying-to-maven-central
   :description "Adapters for interoperability between AWS Java SDK v1, v2, and Cognitect AWS API credentials providers."
   :url "https://github.com/rynkowsg/aws-credentials"
   :license {:name "Apache License, Version 2.0"
@@ -19,37 +32,30 @@
                      [:role "developer"]
                      [:role "maintainer"]]]])
 
-  :signing {:gpg-key "C316D49C3BAED11ADD144D68F210ADE0BD4D6626"} ;; 0xF210ADE0BD4D6626, 'releases' identity
-  :repositories [;; https://central.sonatype.org/publish/publish-portal-maven/
-                 ;; https://central.sonatype.com/repository/maven-snapshots/
-                 ["clojars" {:url "https://repo.clojars.org"
-                             :snapshots true
-                             :releases true}]
-                 ["sonatype-releases" {:url "https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2"
-                                       :snapshots false
-                                       :releases true
-                                       :creds :gpg}]
-                 ["sonatype-snapshots" {:url "https://central.sonatype.com/repository/maven-snapshots/"
-                                        :snapshots true
-                                        :releases false
-                                        :creds :gpg}]
-                 ["local" {:url "file:///tmp/local-repo/"
-                           :snapshots true
-                           :releases true}]]
-  :deploy-repositories [["releases" "sonatype-releases"]
-                        ["snapshots" "sonatype-snapshots"]]
+  ;;
+  ;; other POM related
+  ;;
   :managed-dependencies [;; sorted
                          [org.clojure/clojure "1.12.3"]
                          [pl.rynkowski.awscredentials/aws-api-extras "0.1.2-SNAPSHOT"]
                          [pl.rynkowski.awscredentials/aws-java-sdk-v1 "0.1.2-SNAPSHOT"]
                          [pl.rynkowski.awscredentials/aws-java-sdk-v2 "0.1.2-SNAPSHOT"]
                          [pl.rynkowski.awscredentials/faraday-extras "0.1.2-SNAPSHOT"]]
-  :plugins [;; sorted
-            [lein-file-replace "0.1.0"] ;; https://github.com/jcrossley3/lein-file-replace/tags
-            [lein-modules "0.3.11"] ;; https://github.com/jcrossley3/lein-modules/tags
-            [lein-pprint "1.3.2"]]
-  :modules {:subprocess nil}
+  :repositories [["central" {:url "https://repo1.maven.org/maven2/" :releases true :snapshots false}]
+                 ["clojars" {:url "https://repo.clojars.org" :releases true :snapshots true}]
+                 ["sonatype-releases" {:url "https://central.sonatype.com" :releases true :snapshots false}]
+                 ["sonatype-snapshots" {:url "https://central.sonatype.com/repository/maven-snapshots/" :releases false :snapshots true}]]
 
+  ;;
+  ;; rest
+  ;;
+  :signing {:gpg-key "C316D49C3BAED11ADD144D68F210ADE0BD4D6626"} ;; 0xF210ADE0BD4D6626, 'releases' identity
+  :deploy-repositories [;; https://central.sonatype.org/publish/publish-portal-maven/
+                        ;; https://central.sonatype.com/repository/maven-snapshots/
+                        ["clojars" {:url "https://repo.clojars.org" :creds :gpg}]
+                        ["sonatype-releases" {:url "https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2" :creds :gpg}]
+                        ["sonatype-snapshots" {:url "https://central.sonatype.com/repository/maven-snapshots/" :creds :gpg}]
+                        ["local" {:url #=(eval (format "file://%s/dist" (System/getenv "PWD")))}]]
   :aliases {"test" ["modules" "do" "test," "install"]
             "clean" ["do" ["modules" "clean"]]
             "pom" ["do" ["modules" "pom"]]
@@ -64,10 +70,8 @@
             "mark-stable" ["with-profile" "release/mark-stable" "release"]
             "commit" ["with-profile" "release/commit" "release"]
             "commit:only" ["with-profile" "release/commit-only" "release"]}
-
   :profiles {:provided {:dependencies [[org.clojure/clojure]]}
              :test {:modules {:subprocess "lein"}}
-             ;;
              :release/bump-snapshot {:release-tasks
                                      [["change" "version" "leiningen.release/bump-version"]
                                       ["change" ":managed-dependencies:pl.rynkowski.awscredentials/aws-api-extras" "leiningen.release/bump-version"]

@@ -60,7 +60,7 @@
     </repository>
     <repository>
       <id>sonatype-releases</id>
-      <url>https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2</url>
+      <url>https://central.sonatype.com</url>
       <snapshots>
         <enabled>false</enabled>
       </snapshots>
@@ -76,16 +76,6 @@
       </snapshots>
       <releases>
         <enabled>false</enabled>
-      </releases>
-    </repository>
-    <repository>
-      <id>local</id>
-      <url>file:///tmp/local-repo/</url>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-      <releases>
-        <enabled>true</enabled>
       </releases>
     </repository>
   </repositories>

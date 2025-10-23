@@ -13,8 +13,6 @@
                              :repositories
                              :deploy-repositories
                              :managed-dependencies]}
-  :url "https://github.com/rynkowsg/aws-credentials/tree/main/faraday-extras"
-  :scm {:url "https://github.com/rynkowsg/aws-credentials/tree/main/faraday-extras"}
 
   :source-paths ["lib/main/src"]
   :dependencies [[com.taoensso/faraday "1.12.3"]

@@ -3,7 +3,7 @@
 
 (ns pl.rynkowski.awscredentials.faraday-extras
   (:require
-    [cognitect.aws.credentials :as creds :refer [CredentialsProvider]]
+    [cognitect.aws.credentials :refer [CredentialsProvider]]
     [pl.rynkowski.awscredentials.aws-api-extras :as credse]
     [pl.rynkowski.awscredentials.java-sdk-v1 :as java-sdk-v1]))
 
@@ -40,16 +40,15 @@
 
 (comment
   (require
-    '[green.chargedup.lib.common.aws-organization :as cuaws]
     '[taoensso.faraday :as far])
 
   ;; Faraday client using IAM user credentials (access key + secret key)
   #_1 (def far-client {:secret-key (System/getenv "AWS_SECRET_ACCESS_KEY") :access-key (System/getenv "AWS_ACCESS_KEY_ID") :region (System/getenv "AWS_REGION")})
   #_2 (def far-client (client {:secret-key (System/getenv "AWS_SECRET_ACCESS_KEY") :access-key (System/getenv "AWS_ACCESS_KEY_ID")}))
   ;; Faraday client using aws-api’s CredentialsProvider
-  #_3 (def far-client (client-from-creds-provider {:creds-provider (creds/environment-credentials-provider)}))
+  #_3 (def far-client (client-from-creds-provider {:creds-provider (credse/environment-credentials-provider)}))
   ;; Faraday client assuming an IAM role
-  #_4 (def far-client (client-from-role {:role-arn (cuaws/admin-role :chargedup-sbx)}))
+  #_4 (def far-client (client-from-role {:role-arn (format "arn:aws:iam::%s:role/%s" "<account-id>" "<role-name>")}))
 
   (far/list-tables far-client)
 

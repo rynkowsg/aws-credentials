@@ -18,6 +18,7 @@
   <scm>
     <url>https://github.com/rynkowsg/aws-credentials</url>
     <connection>scm:git:git://github.com/rynkowsg/aws-credentials.git</connection>
+    <tag>0.1.2-SNAPSHOT</tag>
     <developerConnection>scm:git:ssh://github.com/rynkowsg/aws-credentials.git</developerConnection>
   </scm>
   <build>

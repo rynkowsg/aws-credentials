@@ -8,6 +8,7 @@
                              [:scm :connection]
                              [:scm :developerConnection]
                              [:scm :url]
+                             [:scm :tag]
                              :license
                              :signing
                              :repositories

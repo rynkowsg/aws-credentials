@@ -1,4 +1,4 @@
-(defproject pl.rynkowski.awscredentials/suite "0.1.2-SNAPSHOT"
+(defproject pl.rynkowski.awscredentials/bom "0.1.2-SNAPSHOT"
   ;;
   ;; PLUGINS
   ;;
@@ -13,7 +13,7 @@
   ;;
   ;; - https://central.sonatype.org/publish/requirements
   ;; - https://leiningen.org/deploy.html#deploying-to-maven-central
-  :description "Adapters for interoperability between AWS Java SDK v1, v2, and Cognitect AWS API credentials providers."
+  :description "BOM for aws-credentials libraries: defines consistent versions for all modules in this suite."
   :url "https://github.com/rynkowsg/aws-credentials"
   :license {:name "Apache License, Version 2.0"
             :url "http://www.apache.org/licenses/LICENSE-2.0.html"
@@ -21,7 +21,8 @@
   :scm {:name "git"
         :connection "scm:git:git://github.com/rynkowsg/aws-credentials.git"
         :developerConnection "scm:git:ssh://github.com/rynkowsg/aws-credentials.git"
-        :url "https://github.com/rynkowsg/aws-credentials"}
+        :url "https://github.com/rynkowsg/aws-credentials"
+        :tag "0.1.2-SNAPSHOT"}
   :pom-addition '([:developers
                    [:developer
                     [:id "rynkowsg"]
@@ -35,6 +36,7 @@
   ;;
   ;; other POM related
   ;;
+  :packaging "pom"
   :managed-dependencies [;; sorted
                          [org.clojure/clojure "1.12.3"]
                          [pl.rynkowski.awscredentials/aws-api-extras "0.1.2-SNAPSHOT"]
@@ -57,12 +59,12 @@
                         ["sonatype-snapshots" {:url "https://central.sonatype.com/repository/maven-snapshots/" :creds :gpg}]
                         ["local" {:url #=(eval (format "file://%s/dist" (System/getenv "PWD")))}]]
   :aliases #=(eval (let [mvn-repo (or (System/getenv "MVN_REPO") "local")]
-                     {"clean-all" ["do" ["modules" "clean"]]
-                      "pom-all" ["do" ["modules" "pom"]]
-                      "jar-all" ["do" ["modules" "jar"]]
-                      "deploy-all" ["do" ["modules" "deploy" mvn-repo]] ;; add repo name at the end
-                      "install-all" ["do" ["modules" "install"]]
-                      "test-all" ["modules" "do" "test," "install"]
+                     {"clean-all" ["do" "clean" ["modules" "clean"]]
+                      "pom-all" ["do" "pom" ["modules" "pom"]]
+                      "jar-all" ["do" "jar" ["modules" "jar"]]
+                      "deploy-all" ["do" ["deploy" mvn-repo] ["modules" "deploy" mvn-repo]] ;; add repo name at the end
+                      "install-all" ["do" "install" ["modules" "install"]]
+                      "test-all" ["do" "test," "install" ["modules" "do" "test," "install"]]
                       ;; these two rely on Leiningen's built-in 'release' feature, and overloading the :release-tasks with profiles
                       "bump-snapshot" ["with-profile" "release/bump-snapshot" "release"]
                       "mark-stable" ["with-profile" "release/mark-stable" "release"]
@@ -76,6 +78,7 @@
                                       ["change" ":managed-dependencies:pl.rynkowski.awscredentials/aws-java-sdk-v1" "leiningen.release/bump-version"]
                                       ["change" ":managed-dependencies:pl.rynkowski.awscredentials/aws-java-sdk-v2" "leiningen.release/bump-version"]
                                       ["change" ":managed-dependencies:pl.rynkowski.awscredentials/faraday-extras" "leiningen.release/bump-version"]
+                                      ["change" ":scm:tag" "leiningen.release/bump-version"]
                                       ["modules" "change" "version" "leiningen.release/bump-version"]
                                       ["file-replace" "README.md" " \"" "\"]" "version"] ;; update Leiningen ref
                                       ["file-replace" "README.md" "version \"" "\"" "version"] ;; update deps.tools ref
@@ -88,6 +91,7 @@
                                     ["change" ":managed-dependencies:pl.rynkowski.awscredentials/aws-java-sdk-v1" "leiningen.release/bump-version" "release"]
                                     ["change" ":managed-dependencies:pl.rynkowski.awscredentials/aws-java-sdk-v2" "leiningen.release/bump-version" "release"]
                                     ["change" ":managed-dependencies:pl.rynkowski.awscredentials/faraday-extras" "leiningen.release/bump-version" "release"]
+                                    ["change" ":scm:tag" "leiningen.release/bump-version" "release"]
                                     ["modules" "change" "version" "leiningen.release/bump-version" "release"] ;; update Leiningen ref
                                     ["file-replace" "README.md" " \"" "\"]" "version"] ;; update Leiningen ref
                                     ["file-replace" "README.md" "version \"" "\"" "version"] ;; update deps.tools ref

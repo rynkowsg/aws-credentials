@@ -1,4 +1,4 @@
-(defproject pl.rynkowski.awscredentials/aws-api-extras "0.1.2-SNAPSHOT"
+(defproject pl.rynkowski.awscredentials/aws-api-extras "0.1.2"
   :description "Extra utils for aws-api related to CredentialsProvider."
   :plugins [[lein-parent "0.3.9"] ;; https://github.com/achin/lein-parent/tags
             [lein-pprint "1.3.2"]]

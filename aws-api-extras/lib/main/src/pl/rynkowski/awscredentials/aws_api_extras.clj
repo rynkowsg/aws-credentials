@@ -308,9 +308,17 @@
     (reify
       CredentialsProvider
       (fetch [_]
-        (let [resp (aws/invoke sts-client {:op :AssumeRole
-                                           :request {:RoleArn role-arn
-                                                     :RoleSessionName session-name}})
+        (let [req {:op :AssumeRole
+                   :request {:RoleArn role-arn
+                             :RoleSessionName session-name}}
+              resp (aws/invoke sts-client req)
+              _ (when (:cognitect.anomalies/category resp)
+                  (throw (ex-info (format "AWS %s failed %s"
+                                          (name (:op req))
+                                          (or (:cognitect.anomalies/message resp)
+                                              (some-> resp :cognitect.anomalies/category name)
+                                              "unknown error"))
+                                  {:origin resp})))
               creds (:Credentials resp)
               valid-creds (valid-credentials
                             {:aws/access-key-id (:AccessKeyId creds)

@@ -120,6 +120,10 @@
       <artifactId>aws-api-extras</artifactId>
     </dependency>
     <dependency>
+      <groupId>pl.rynkowski.awscredentials</groupId>
+      <artifactId>aws-java-sdk-v1</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.clojure</groupId>
       <artifactId>clojure</artifactId>
       <scope>provided</scope>

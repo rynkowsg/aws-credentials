@@ -17,7 +17,8 @@
 
   :source-paths ["lib/main/src"]
   :dependencies [[com.taoensso/faraday "1.12.3"]
-                 [pl.rynkowski.awscredentials/aws-api-extras]]
+                 [pl.rynkowski.awscredentials/aws-api-extras]
+                 [pl.rynkowski.awscredentials/aws-java-sdk-v1]]
 
   :profiles {:provided {:dependencies [[org.clojure/clojure]]}
              :dev {:source-paths []

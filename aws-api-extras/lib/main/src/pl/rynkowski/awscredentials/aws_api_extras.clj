@@ -36,9 +36,9 @@
   It is an exact copy of `cognitect.aws.credentials/->instant`."
   [t]
   (cond
-    (instance? Date t)         (.toInstant ^Date t)
+    (instance? Date t) (.toInstant ^Date t)
     (instance? CharSequence t) (Instant/parse t)
-    (number? t)                (Instant/ofEpochMilli (.longValue ^Number t))
+    (number? t) (Instant/ofEpochMilli (.longValue ^Number t))
     :else t))
 
 (defn format-duration
@@ -62,8 +62,8 @@
                              (ZonedDateTime/ofInstant ZoneOffset/UTC)
                              (.format DateTimeFormatter/ISO_ZONED_DATE_TIME))]
       (log/debugf "Credentials expire in %s (at %s)."
-        (format-duration now expiration)
-        expiration-str))
+                  (format-duration now expiration)
+                  expiration-str))
     (catch Throwable t
       (log/error t "Error logging credentials expiry."))))
 #_(log-expiration {:Expiration (-> (Instant/now) (.plus (Duration/ofHours 1)))})
@@ -224,7 +224,6 @@
   (build-default-provider* {:http-client http-client
                             :cache-provider? cache-provider?
                             :cache-credentials? cache-credentials?}))
-
 
 (defprotocol ReconfigurableCredentials
   (-reconfigure! [this cfg] "Refresh provider using given cfg."))

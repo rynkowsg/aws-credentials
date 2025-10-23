@@ -14,6 +14,7 @@
           <entry key="clojure.core/assert" value="1000" />
           <entry key="clojure.core/assoc" value="1" />
           <entry key="clojure.core/cond-&gt;" value="1" />
+          <entry key="clojure.core/ex-info" value="1000" />
           <entry key="clojure.core/merge" value="1000" />
           <entry key="clojure.core/or" value="1000" />
           <entry key="clojure.core/some" value="0" />

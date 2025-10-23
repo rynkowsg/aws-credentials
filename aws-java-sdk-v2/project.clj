@@ -3,14 +3,14 @@
   :plugins [[lein-parent "0.3.9"] ;; https://github.com/achin/lein-parent/tags
             [lein-pprint "1.3.2"]]
   :parent-project {:path "../project.clj"
-                     :inherit [[:scm :name]
-                               [:scm :connection]
-                               [:scm :developerConnection]
-                               :license
-                               :signing
-                               :repositories
-                               :deploy-repositories
-                               :managed-dependencies]}
+                   :inherit [[:scm :name]
+                             [:scm :connection]
+                             [:scm :developerConnection]
+                             :license
+                             :signing
+                             :repositories
+                             :deploy-repositories
+                             :managed-dependencies]}
   :url "https://github.com/rynkowsg/aws-credentials/tree/main/aws-java-sdk-v2"
   :scm {:url "https://github.com/rynkowsg/aws-credentials/tree/main/aws-java-sdk-v2"}
 

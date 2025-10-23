@@ -6,7 +6,6 @@
     [cognitect.aws.credentials :refer [CredentialsProvider fetch]])
   (:import
     (clojure.lang IPersistentMap)
-    (software.amazon.awssdk.auth.credentials AwsCredentialsProvider)
     (software.amazon.awssdk.auth.credentials AwsBasicCredentials AwsCredentialsProvider AwsSessionCredentials
                                              StaticCredentialsProvider)))
 

@@ -3,9 +3,9 @@
 
 (ns pl.rynkowski.awscredentials.faraday-extras
   (:require
-    [pl.rynkowski.awscredentials.java-sdk-v1 :as java-sdk-v1]
+    [cognitect.aws.credentials :as creds :refer [CredentialsProvider]]
     [pl.rynkowski.awscredentials.aws-api-extras :as credse]
-    [cognitect.aws.credentials :as creds :refer [CredentialsProvider]]))
+    [pl.rynkowski.awscredentials.java-sdk-v1 :as java-sdk-v1]))
 
 (defn client
   ([]

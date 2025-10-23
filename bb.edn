@@ -2,7 +2,12 @@
         pl.rynkowski.clj-gr/bb #:git{:url "https://github.com/rynkowsg/clj-gr.git" :tag "v0.0.12" :sha "05be32e01c53aedac4248ba03bb7703dc030c49a" :deps/root "lib/bb"}}
 
  :tasks {:requires (#_:sorted
+                    [clojure.string :as str]
                     [pl.rynkowski.clj-gr.bb :refer [print-exec]])
+
+         :init (do
+                 (def fmt-sources (str/join " " [".cljfmt.edn" "bb.edn" "deps.edn" "project.clj"
+                                                 "aws-api-extras" "aws-java-sdk-v1" "aws-java-sdk-v2" "faraday-extras"])))
 
          tool:antq (print-exec '(clojure "-M:tool/antq") *command-line-args*)
          tool:cljfmt (print-exec '(clojure "-M:tool/cljfmt -m cljfmt.main") *command-line-args*)
@@ -16,8 +21,8 @@
          lint:yml (shell "yamlfmt --lint .")
          lint:yml:fix (shell "yamlfmt .")
 
-         fmt (shell "bb tool:cljfmt fix")
-         fmt:check (shell "bb tool:cljfmt check")
+         fmt (shell (str "bb tool:cljfmt fix " fmt-sources))
+         fmt:check (shell (str "bb tool:cljfmt check " fmt-sources))
 
          ver:snap:patch (print-exec '(shell "lein bump-snapshot :patch"))
          ver:snap:minor (print-exec '(shell "lein bump-snapshot :minor"))

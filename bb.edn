@@ -31,13 +31,17 @@
          ver:snap:beta (print-exec '(shell "lein bump-snapshot :beta"))
          ver:snap:rc (print-exec '(shell "lein bump-snapshot :rc"))
          ver:stable (print-exec '(shell "lein mark-stable"))
-         pom (print-exec '(shell "lein pom"))
+         pom (print-exec '(shell "lein pom-all"))
          commit (print-exec '(shell "lein commit"))
          commit:only (print-exec '(shell "lein commit:only"))
-         deploy:local (print-exec '(shell "lein deploy:local"))
-         deploy:snapshot (print-exec '(shell "lein deploy:sonatype-snapshots"))
-         deploy:release (do (print-exec '(shell "lein deploy:clojars"))
-                            (print-exec '(shell "lein deploy:sonatype-releases")))
+         build (print-exec '(shell "lein jar-all"))
+         deploy (let [mvn-repo (or (first *command-line-args*) "local")] ;; local, clojars, sonatype-releases, sonatype-snapshots
+                  (println (format "CMD: MVN_REPO=%s lein deploy-all\n---" mvn-repo))
+                  (shell {:extra-env {"MVN_REPO" mvn-repo}} "lein deploy-all"))
+         deploy:local (shell "bb deploy local")
+         deploy:snapshot (shell "bb deploy sonatype-snapshots")
+         deploy:release (do (shell "bb deploy clojars")
+                            (shell "bb deploy sonatype-releases"))
          ;; Instruction:
          ;; - bump new version snapshot
          ;; - mark as stable with `ver:stable`

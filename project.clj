@@ -56,20 +56,18 @@
                         ["sonatype-releases" {:url "https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2" :creds :gpg}]
                         ["sonatype-snapshots" {:url "https://central.sonatype.com/repository/maven-snapshots/" :creds :gpg}]
                         ["local" {:url #=(eval (format "file://%s/dist" (System/getenv "PWD")))}]]
-  :aliases {"test" ["modules" "do" "test," "install"]
-            "clean" ["do" ["modules" "clean"]]
-            "pom" ["do" ["modules" "pom"]]
-            "jar" ["do" ["modules" "jar"]]
-            "install" ["do" ["modules" "install"]]
-            "deploy:local" ["do" ["modules" "deploy" "local"]]
-            "deploy:clojars" ["do" ["modules" "deploy" "clojars"]]
-            "deploy:sonatype-releases" ["do" ["modules" "deploy" "sonatype-releases"]]
-            "deploy:sonatype-snapshots" ["do" ["modules" "deploy" "sonatype-snapshots"]]
-            ;; these two rely on Leiningen's built-in 'release' feature, and overloading the :release-tasks with profiles
-            "bump-snapshot" ["with-profile" "release/bump-snapshot" "release"]
-            "mark-stable" ["with-profile" "release/mark-stable" "release"]
-            "commit" ["with-profile" "release/commit" "release"]
-            "commit:only" ["with-profile" "release/commit-only" "release"]}
+  :aliases #=(eval (let [mvn-repo (or (System/getenv "MVN_REPO") "local")]
+                     {"clean-all" ["do" ["modules" "clean"]]
+                      "pom-all" ["do" ["modules" "pom"]]
+                      "jar-all" ["do" ["modules" "jar"]]
+                      "deploy-all" ["do" ["modules" "deploy" mvn-repo]] ;; add repo name at the end
+                      "install-all" ["do" ["modules" "install"]]
+                      "test-all" ["modules" "do" "test," "install"]
+                      ;; these two rely on Leiningen's built-in 'release' feature, and overloading the :release-tasks with profiles
+                      "bump-snapshot" ["with-profile" "release/bump-snapshot" "release"]
+                      "mark-stable" ["with-profile" "release/mark-stable" "release"]
+                      "commit" ["with-profile" "release/commit" "release"]
+                      "commit:only" ["with-profile" "release/commit-only" "release"]}))
   :profiles {:provided {:dependencies [[org.clojure/clojure]]}
              :test {:modules {:subprocess "lein"}}
              :release/bump-snapshot {:release-tasks
@@ -81,7 +79,7 @@
                                       ["modules" "change" "version" "leiningen.release/bump-version"]
                                       ["file-replace" "README.md" " \"" "\"]" "version"] ;; update Leiningen ref
                                       ["file-replace" "README.md" "version \"" "\"" "version"] ;; update deps.tools ref
-                                      ["pom"] ;; update POMs so deps.edn users can depend via git URL
+                                      ["pom-all"] ;; update POMs so deps.edn users can depend via git URL
                                       #_:release-tasks-end]
                                      #_:profile-end}
              :release/mark-stable {:release-tasks
@@ -93,7 +91,7 @@
                                     ["modules" "change" "version" "leiningen.release/bump-version" "release"] ;; update Leiningen ref
                                     ["file-replace" "README.md" " \"" "\"]" "version"] ;; update Leiningen ref
                                     ["file-replace" "README.md" "version \"" "\"" "version"] ;; update deps.tools ref
-                                    ["pom"] ;; update POMs so deps.edn users can depend via git URL
+                                    ["pom-all"] ;; update POMs so deps.edn users can depend via git URL
                                     #_:release-tasks-end]
                                    #_:profile-end}
              :release/commit-only {;; Only commit. Do not create tag. Do not push.
@@ -108,6 +106,6 @@
                                #_:release-tasks-end]
                               #_:profile-end}
              :release/deploy {:release-tasks [["vcs" "assert-committed"]
-                                              ["jar"]
-                                              ["deploy"]]}}
+                                              ["jar-all"]
+                                              ["deploy-all"]]}}
   #_:project)

@@ -2,10 +2,9 @@
 ;; SPDX-License-Identifier: Apache-2.0
 
 (ns pl.rynkowski.awscredentials.java-sdk-v2
-  (:require
-    [cognitect.aws.credentials :refer [CredentialsProvider fetch]])
   (:import
     (clojure.lang IPersistentMap)
+    (cognitect.aws.credentials CredentialsProvider)
     (software.amazon.awssdk.auth.credentials AwsBasicCredentials AwsCredentialsProvider AwsSessionCredentials
                                              StaticCredentialsProvider)))
 
@@ -26,7 +25,7 @@
   [^CredentialsProvider creds-provider]
   (let [{:aws/keys [access-key-id
                     secret-access-key
-                    session-token]} (fetch creds-provider)]
+                    session-token]} (.fetch creds-provider)]
     (->credentials-provider {:access-key access-key-id
                              :secret-key secret-access-key
                              :session-token session-token})))

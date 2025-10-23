@@ -7,4 +7,4 @@
 {:paths ["lib/main/src"]
 
  :deps {com.cognitect.aws/api {:mvn/version "0.8.774"}
-        software.amazon.awssdk/auth {:mvn/version "2.35.11"}}}
+        software.amazon.awssdk/auth {:mvn/version "2.36.0"}}}

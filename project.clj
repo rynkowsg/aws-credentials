@@ -1,4 +1,4 @@
-(defproject pl.rynkowski.awscredentials/bom "0.1.2-SNAPSHOT"
+(defproject pl.rynkowski.awscredentials/main "0.1.2-SNAPSHOT"
   ;;
   ;; PLUGINS
   ;;
@@ -36,7 +36,6 @@
   ;;
   ;; other POM related
   ;;
-  :packaging "pom"
   :managed-dependencies [;; sorted
                          [org.clojure/clojure "1.12.3"]
                          [pl.rynkowski.awscredentials/aws-api-extras "0.1.2-SNAPSHOT"]
@@ -59,12 +58,12 @@
                         ["sonatype-snapshots" {:url "https://central.sonatype.com/repository/maven-snapshots/" :creds :gpg}]
                         ["local" {:url #=(eval (format "file://%s/dist" (System/getenv "PWD")))}]]
   :aliases #=(eval (let [mvn-repo (or (System/getenv "MVN_REPO") "local")]
-                     {"clean-all" ["do" "clean" ["modules" "clean"]]
-                      "pom-all" ["do" "pom" ["modules" "pom"]]
-                      "jar-all" ["do" "jar" ["modules" "jar"]]
-                      "deploy-all" ["do" ["deploy" mvn-repo] ["modules" "deploy" mvn-repo]] ;; add repo name at the end
-                      "install-all" ["do" "install" ["modules" "install"]]
-                      "test-all" ["do" "test," "install" ["modules" "do" "test," "install"]]
+                     {"clean-all" ["do" ["modules" "clean"]]
+                      "pom-all" ["do" ["modules" "pom"]]
+                      "jar-all" ["do" ["modules" "jar"]]
+                      "deploy-all" ["do" ["modules" "deploy" mvn-repo]] ;; add repo name at the end
+                      "install-all" ["do" ["modules" "install"]]
+                      "test-all" ["do" ["modules" "do" "test," "install"]]
                       ;; these two rely on Leiningen's built-in 'release' feature, and overloading the :release-tasks with profiles
                       "bump-snapshot" ["with-profile" "release/bump-snapshot" "release"]
                       "mark-stable" ["with-profile" "release/mark-stable" "release"]

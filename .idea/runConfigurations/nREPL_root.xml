@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="nREPL root" type="ClojureREPL" factoryName="Remote" activateToolWindowBeforeRun="false">
-    <module name="suite" />
+    <module name="aws-credentials" />
     <setting name="displayName" value="nREPL root" />
     <setting name="host" value="" />
     <setting name="port" value="0" />

@@ -1,4 +1,4 @@
-(defproject pl.rynkowski.awscredentials/main "0.1.2"
+(defproject pl.rynkowski.awscredentials/main "0.1.3-SNAPSHOT"
   ;;
   ;; PLUGINS
   ;;
@@ -22,7 +22,7 @@
         :connection "scm:git:git://github.com/rynkowsg/aws-credentials.git"
         :developerConnection "scm:git:ssh://github.com/rynkowsg/aws-credentials.git"
         :url "https://github.com/rynkowsg/aws-credentials"
-        :tag "0.1.2"}
+        :tag "0.1.3-SNAPSHOT"}
   :pom-addition '([:developers
                    [:developer
                     [:id "rynkowsg"]
@@ -38,10 +38,10 @@
   ;;
   :managed-dependencies [;; sorted
                          [org.clojure/clojure "1.12.3"]
-                         [pl.rynkowski.awscredentials/aws-api-extras "0.1.2"]
-                         [pl.rynkowski.awscredentials/aws-java-sdk-v1 "0.1.2"]
-                         [pl.rynkowski.awscredentials/aws-java-sdk-v2 "0.1.2"]
-                         [pl.rynkowski.awscredentials/faraday-extras "0.1.2"]]
+                         [pl.rynkowski.awscredentials/aws-api-extras "0.1.3-SNAPSHOT"]
+                         [pl.rynkowski.awscredentials/aws-java-sdk-v1 "0.1.3-SNAPSHOT"]
+                         [pl.rynkowski.awscredentials/aws-java-sdk-v2 "0.1.3-SNAPSHOT"]
+                         [pl.rynkowski.awscredentials/faraday-extras "0.1.3-SNAPSHOT"]]
   :repositories [["central" {:url "https://repo1.maven.org/maven2/" :releases true :snapshots false}]
                  ["clojars" {:url "https://repo.clojars.org" :releases true :snapshots true}]
                  ["sonatype-releases" {:url "https://central.sonatype.com" :releases true :snapshots false}]

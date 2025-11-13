@@ -6,5 +6,5 @@
 ;;
 {:paths ["lib/main/src"]
 
- :deps {com.amazonaws/aws-java-sdk-core {:mvn/version "1.12.792"}
+ :deps {com.amazonaws/aws-java-sdk-core {:mvn/version "1.12.793"}
         com.cognitect.aws/api {:mvn/version "0.8.774"}}}

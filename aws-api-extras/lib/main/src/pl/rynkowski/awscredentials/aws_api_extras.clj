@@ -8,9 +8,7 @@
     [clojure.tools.logging :as log]
     [cognitect.aws.client.api :as aws]
     [cognitect.aws.config :as config]
-    [cognitect.aws.credentials :as creds :refer [CredentialsProvider
-                                                 Stoppable
-                                                 -stop
+    [cognitect.aws.credentials :as creds :refer [-stop
                                                  cached-credentials-with-auto-refresh
                                                  calculate-ttl
                                                  valid-credentials]]
@@ -83,7 +81,7 @@
   [providers]
   (let [cached-provider (atom nil)]
     (reify
-      CredentialsProvider
+      creds/CredentialsProvider
       (fetch [_]
         (valid-credentials
           (if @cached-provider
@@ -93,13 +91,13 @@
                       (reset! cached-provider provider)
                       creds))
                   providers))))
-      Stoppable
+      creds/Stoppable
       (-stop [_] (run! -stop providers)))))
 
 (defn environment-credentials-provider
   "Copy of `cognitect.aws.credentials/environment-credentials-provider` without caching credentials."
   []
-  (reify CredentialsProvider
+  (reify creds/CredentialsProvider
     (fetch [_]
       (valid-credentials
         {:aws/access-key-id (u/getenv "AWS_ACCESS_KEY_ID")
@@ -110,7 +108,7 @@
 (defn system-property-credentials-provider
   "Copy of `cognitect.aws.credentials/system-property-credentials-provider` without caching credentials & refresh."
   []
-  (reify CredentialsProvider
+  (reify creds/CredentialsProvider
     (fetch [_]
       (valid-credentials
         {:aws/access-key-id (u/getProperty "aws.accessKeyId")
@@ -129,7 +127,7 @@
                                                   (some-> (u/getenv "AWS_CREDENTIAL_PROFILES_FILE") io/file) ;; java sdk v1
                                                   (io/file (u/getProperty "user.home") ".aws" "credentials"))))
   ([profile-name ^File f]
-   (reify CredentialsProvider
+   (reify creds/CredentialsProvider
      (fetch [_]
        (when (.exists f)
          (try
@@ -145,7 +143,7 @@
 (defn container-credentials-provider
   "Copy of `cognitect.aws.credentials/container-credentials-provider` without caching credentials."
   [http-client]
-  (reify CredentialsProvider
+  (reify creds/CredentialsProvider
     (fetch [_]
       (when-let [creds (ec2/container-credentials http-client)]
         (let [valid-creds (valid-credentials
@@ -160,7 +158,7 @@
 (defn ^:deprecated instance-profile-credentials-provider
   "Copy of `cognitect.aws.credentials/instance-profile-credentials-provider` without caching credentials."
   [http-client]
-  (reify CredentialsProvider
+  (reify creds/CredentialsProvider
     (fetch [_]
       (when-let [creds (ec2/instance-credentials http-client)]
         (let [valid-creds (valid-credentials
@@ -175,7 +173,7 @@
 (defn instance-profile-IMDSv2-credentials-provider
   "Copy of `cognitect.aws.credentials/instance-profile-IMDSv2-credentials-provider` without caching credentials."
   [http-client]
-  (reify CredentialsProvider
+  (reify creds/CredentialsProvider
     (fetch [_]
       (when-let [IMDSv2-token (ec2/IMDSv2-token http-client)]
         (when-let [creds (ec2/instance-credentials http-client IMDSv2-token)]
@@ -197,7 +195,7 @@
   [{:keys [providers cache-provider?] :or {cache-provider? true}}]
   (let [cached-provider (atom nil)]
     (reify
-      CredentialsProvider
+      creds/CredentialsProvider
       (fetch [_]
         (valid-credentials
           (if (and cache-provider? @cached-provider)
@@ -207,7 +205,7 @@
                       (reset! cached-provider provider)
                       creds))
                   providers))))
-      Stoppable
+      creds/Stoppable
       (-stop [_] (run! -stop providers)))))
 
 ;; Helper: build the “default-v2” chain from a config map (no side effects)
@@ -247,7 +245,7 @@
         state* (atom {:cfg cfg'
                       :prov (build-default-provider* cfg')})]
     (reify
-      CredentialsProvider
+      creds/CredentialsProvider
       (fetch [_]
         (when-let [p (:prov @state*)]
           (fetch p)))
@@ -259,7 +257,7 @@
                                                    {:cfg cfg :prov np})))]
           (when-let [op (:prov old)]
             (try
-              (-stop ^Stoppable op)
+              (-stop ^creds/Stoppable op)
               (catch Throwable t
                 (log/warn t "Error stopping previous credentials provider"))))
           :ok))
@@ -273,17 +271,17 @@
                                                        {:cfg cfg' :prov np})))]
             (when-let [op (:prov old)]
               (try
-                (-stop ^Stoppable op)
+                (-stop ^creds/Stoppable op)
                 (catch Throwable t
                   (log/warn t "Error stopping previous credentials provider"))))
             :ok)))
 
-      Stoppable
+      creds/Stoppable
       (-stop [_]
         (let [[old _] (swap-vals! state* (fn [s] (assoc s :prov nil)))]
           (when-let [op (:prov old)]
             (try
-              (-stop ^Stoppable op)
+              (-stop ^creds/Stoppable op)
               (catch Throwable t
                 (log/warn t "Error during provider stop"))))))
       #_:end)))
@@ -306,7 +304,7 @@
                       source-provider (assoc :credentials-provider source-provider))
         sts-client (aws/client sts-request)]
     (reify
-      CredentialsProvider
+      creds/CredentialsProvider
       (fetch [_]
         (let [req {:op :AssumeRole
                    :request {:RoleArn role-arn
@@ -328,6 +326,6 @@
                             "assumed role")]
           (when valid-creds (log-expiration creds))
           valid-creds))
-      Stoppable
+      creds/Stoppable
       (-stop [_]
         (-stop sts-client)))))

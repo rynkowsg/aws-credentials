@@ -1,4 +1,4 @@
-(defproject pl.rynkowski.awscredentials/aws-java-sdk-v1 "0.1.3-SNAPSHOT"
+(defproject pl.rynkowski.awscredentials/aws-java-sdk-v1 "0.1.3"
   :description "An adapter providing an AWS Java SDK v1 credentials."
   :plugins [[lein-parent "0.3.9"] ;; https://github.com/achin/lein-parent/tags
             [lein-pprint "1.3.2"]]

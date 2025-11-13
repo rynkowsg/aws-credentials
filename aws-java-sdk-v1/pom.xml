@@ -4,7 +4,7 @@
   <groupId>pl.rynkowski.awscredentials</groupId>
   <artifactId>aws-java-sdk-v1</artifactId>
   <packaging>jar</packaging>
-  <version>0.1.3-SNAPSHOT</version>
+  <version>0.1.3</version>
   <name>aws-java-sdk-v1</name>
   <description>An adapter providing an AWS Java SDK v1 credentials.</description>
   <url>https://github.com/rynkowsg/aws-credentials</url>
@@ -18,7 +18,7 @@
   <scm>
     <url>https://github.com/rynkowsg/aws-credentials</url>
     <connection>scm:git:git://github.com/rynkowsg/aws-credentials.git</connection>
-    <tag>0.1.3-SNAPSHOT</tag>
+    <tag>0.1.3</tag>
     <developerConnection>scm:git:ssh://github.com/rynkowsg/aws-credentials.git</developerConnection>
   </scm>
   <build>
@@ -90,27 +90,27 @@
       <dependency>
         <groupId>pl.rynkowski.awscredentials</groupId>
         <artifactId>aws-api-extras</artifactId>
-        <version>0.1.3-SNAPSHOT</version>
+        <version>0.1.3</version>
       </dependency>
       <dependency>
         <groupId>pl.rynkowski.awscredentials</groupId>
         <artifactId>aws-crt-java</artifactId>
-        <version>0.1.3-SNAPSHOT</version>
+        <version>0.1.3</version>
       </dependency>
       <dependency>
         <groupId>pl.rynkowski.awscredentials</groupId>
         <artifactId>aws-java-sdk-v1</artifactId>
-        <version>0.1.3-SNAPSHOT</version>
+        <version>0.1.3</version>
       </dependency>
       <dependency>
         <groupId>pl.rynkowski.awscredentials</groupId>
         <artifactId>aws-java-sdk-v2</artifactId>
-        <version>0.1.3-SNAPSHOT</version>
+        <version>0.1.3</version>
       </dependency>
       <dependency>
         <groupId>pl.rynkowski.awscredentials</groupId>
         <artifactId>faraday-extras</artifactId>
-        <version>0.1.3-SNAPSHOT</version>
+        <version>0.1.3</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

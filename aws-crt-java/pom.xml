@@ -2,11 +2,11 @@
 <project xmlns="https://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>pl.rynkowski.awscredentials</groupId>
-  <artifactId>faraday-extras</artifactId>
+  <artifactId>aws-crt-java</artifactId>
   <packaging>jar</packaging>
   <version>0.1.3-SNAPSHOT</version>
-  <name>faraday-extras</name>
-  <description>Extra utils for aws-api related to CredentialsProvider.</description>
+  <name>aws-crt-java</name>
+  <description>An adapter providing an AWS CRT for Java credentials.</description>
   <url>https://github.com/rynkowsg/aws-credentials</url>
   <licenses>
     <license>
@@ -116,17 +116,14 @@
   </dependencyManagement>
   <dependencies>
     <dependency>
-      <groupId>com.taoensso</groupId>
-      <artifactId>faraday</artifactId>
-      <version>1.12.3</version>
+      <groupId>com.cognitect.aws</groupId>
+      <artifactId>api</artifactId>
+      <version>0.8.774</version>
     </dependency>
     <dependency>
-      <groupId>pl.rynkowski.awscredentials</groupId>
-      <artifactId>aws-api-extras</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>pl.rynkowski.awscredentials</groupId>
-      <artifactId>aws-java-sdk-v1</artifactId>
+      <groupId>software.amazon.awssdk.crt</groupId>
+      <artifactId>aws-crt</artifactId>
+      <version>0.39.4</version>
     </dependency>
     <dependency>
       <groupId>org.clojure</groupId>

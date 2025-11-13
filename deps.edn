@@ -7,6 +7,7 @@
 ;;
 
 {:deps {pl.rynkowski.awscredentials/aws-api-extras {:local/root "./aws-api-extras"}
+        pl.rynkowski.awscredentials/aws-crt-java {:local/root "./aws-crt-java"}
         pl.rynkowski.awscredentials/aws-java-sdk-v1 {:local/root "./aws-java-sdk-v1"}
         pl.rynkowski.awscredentials/aws-java-sdk-v2 {:local/root "./aws-java-sdk-v2"}
         pl.rynkowski.awscredentials/faraday-extras {:local/root "./faraday-extras"}}

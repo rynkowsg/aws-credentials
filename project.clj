@@ -39,6 +39,7 @@
   :managed-dependencies [;; sorted
                          [org.clojure/clojure "1.12.3"]
                          [pl.rynkowski.awscredentials/aws-api-extras "0.1.3-SNAPSHOT"]
+                         [pl.rynkowski.awscredentials/aws-crt-java "0.1.3-SNAPSHOT"]
                          [pl.rynkowski.awscredentials/aws-java-sdk-v1 "0.1.3-SNAPSHOT"]
                          [pl.rynkowski.awscredentials/aws-java-sdk-v2 "0.1.3-SNAPSHOT"]
                          [pl.rynkowski.awscredentials/faraday-extras "0.1.3-SNAPSHOT"]]
@@ -74,6 +75,7 @@
              :release/bump-snapshot {:release-tasks
                                      [["change" "version" "leiningen.release/bump-version"]
                                       ["change" ":managed-dependencies:pl.rynkowski.awscredentials/aws-api-extras" "leiningen.release/bump-version"]
+                                      ["change" ":managed-dependencies:pl.rynkowski.awscredentials/aws-crt-java" "leiningen.release/bump-version"]
                                       ["change" ":managed-dependencies:pl.rynkowski.awscredentials/aws-java-sdk-v1" "leiningen.release/bump-version"]
                                       ["change" ":managed-dependencies:pl.rynkowski.awscredentials/aws-java-sdk-v2" "leiningen.release/bump-version"]
                                       ["change" ":managed-dependencies:pl.rynkowski.awscredentials/faraday-extras" "leiningen.release/bump-version"]
@@ -87,6 +89,7 @@
              :release/mark-stable {:release-tasks
                                    [["change" "version" "leiningen.release/bump-version" "release"]
                                     ["change" ":managed-dependencies:pl.rynkowski.awscredentials/aws-api-extras" "leiningen.release/bump-version" "release"]
+                                    ["change" ":managed-dependencies:pl.rynkowski.awscredentials/aws-crt-java" "leiningen.release/bump-version" "release"]
                                     ["change" ":managed-dependencies:pl.rynkowski.awscredentials/aws-java-sdk-v1" "leiningen.release/bump-version" "release"]
                                     ["change" ":managed-dependencies:pl.rynkowski.awscredentials/aws-java-sdk-v2" "leiningen.release/bump-version" "release"]
                                     ["change" ":managed-dependencies:pl.rynkowski.awscredentials/faraday-extras" "leiningen.release/bump-version" "release"]

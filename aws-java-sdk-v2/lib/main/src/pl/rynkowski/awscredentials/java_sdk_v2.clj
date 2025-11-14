@@ -16,6 +16,8 @@
   (^AwsCredentialsProvider ->credentials-provider [_]))
 
 (extend-protocol AwsSdkV2CredentialsProviderSource
+
+  ;; Creates a static Credentials Provider. The credentials never change.
   IPersistentMap
   (->credentials-provider [{:keys [access-key secret-key session-token]}]
     (assert (seq access-key) "access-key can not be empty")
@@ -27,11 +29,22 @@
       (StaticCredentialsProvider/create
         (AwsBasicCredentials/create access-key secret-key))))
 
+  ;; Creates a credentials provider delegating work to aws-api's credentials provider.
+  ;; Preserves the source provider's nature: a static provider produces a static provider,
+  ;; a dynamic provider produces a dynamic one.
   cognitect.aws.credentials.CredentialsProvider
   (->credentials-provider [^cognitect.aws.credentials.CredentialsProvider creds-provider]
-    (let [{:aws/keys [access-key-id
-                      secret-access-key
-                      session-token]} (.fetch creds-provider)]
-      (->credentials-provider {:access-key access-key-id
-                               :secret-key secret-access-key
-                               :session-token session-token}))))
+    (let [session-creds-provider? (some? (:aws/session-token (.fetch creds-provider)))]
+      (if session-creds-provider?
+        (reify AwsCredentialsProvider
+          (resolveCredentials [_]
+            (let [{:aws/keys [access-key-id secret-access-key session-token]} (.fetch creds-provider)
+                  builder (-> (AwsSessionCredentials/builder)
+                              (.accessKeyId access-key-id)
+                              (.secretAccessKey secret-access-key)
+                              (.sessionToken session-token))]
+              (.build builder))))
+        (reify AwsCredentialsProvider
+          (resolveCredentials [_]
+            (let [{:aws/keys [access-key-id secret-access-key]} (.fetch creds-provider)]
+              (AwsBasicCredentials/create access-key-id secret-access-key))))))))

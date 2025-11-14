@@ -38,11 +38,12 @@
       (if session-creds-provider?
         (reify AwsCredentialsProvider
           (resolveCredentials [_]
-            (let [{:aws/keys [access-key-id secret-access-key session-token]} (.fetch creds-provider)
-                  builder (-> (AwsSessionCredentials/builder)
-                              (.accessKeyId access-key-id)
-                              (.secretAccessKey secret-access-key)
-                              (.sessionToken session-token))]
+            (let [{:aws/keys [access-key-id secret-access-key session-token expiration]} (.fetch creds-provider)
+                  builder (cond-> (-> (AwsSessionCredentials/builder)
+                                      (.accessKeyId access-key-id)
+                                      (.secretAccessKey secret-access-key)
+                                      (.sessionToken session-token))
+                            expiration (.expirationTime expiration))]
               (.build builder))))
         (reify AwsCredentialsProvider
           (resolveCredentials [_]

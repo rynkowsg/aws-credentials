@@ -150,6 +150,7 @@
                             {:aws/access-key-id (:AccessKeyId creds)
                              :aws/secret-access-key (:SecretAccessKey creds)
                              :aws/session-token (:Token creds)
+                             :aws/expiration (some-> creds :Expiration (->instant))
                              :cognitect.aws.credentials/ttl (calculate-ttl creds)}
                             "ecs container")]
           (when valid-creds (log-expiration creds))
@@ -165,6 +166,7 @@
                             {:aws/access-key-id (:AccessKeyId creds)
                              :aws/secret-access-key (:SecretAccessKey creds)
                              :aws/session-token (:Token creds)
+                             :aws/expiration (some-> creds :Expiration (->instant))
                              :cognitect.aws.credentials/ttl (calculate-ttl creds)}
                             "ec2 instance")]
           (when valid-creds (log-expiration creds))
@@ -181,6 +183,7 @@
                               {:aws/access-key-id (:AccessKeyId creds)
                                :aws/secret-access-key (:SecretAccessKey creds)
                                :aws/session-token (:Token creds)
+                               :aws/expiration (some-> creds :Expiration (->instant))
                                :cognitect.aws.credentials/ttl (calculate-ttl creds)}
                               "IMDSv2 ec2 instance")]
             (when valid-creds (log-expiration creds))
@@ -322,6 +325,7 @@
                             {:aws/access-key-id (:AccessKeyId creds)
                              :aws/secret-access-key (:SecretAccessKey creds)
                              :aws/session-token (:SessionToken creds)
+                             :aws/expiration (some-> creds :Expiration (->instant))
                              :cognitect.aws.credentials/ttl (calculate-ttl creds)}
                             "assumed role")]
           (when valid-creds (log-expiration creds))

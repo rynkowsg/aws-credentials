@@ -17,6 +17,7 @@
   (:import (java.io File)
            (java.time Duration Instant ZoneOffset ZonedDateTime)
            (java.time.format DateTimeFormatter)
+           (java.time.temporal ChronoUnit)
            (java.util Date)))
 
 (def fetch
@@ -31,9 +32,10 @@
   java.util.Date, CharSequence, Number, and Instant objects, which are
   returned outright.
 
-  It is an exact copy of `cognitect.aws.credentials/->instant`."
+  It is a nearly exact copy of `cognitect.aws.credentials/->instant`."
   [t]
   (cond
+    (inst? t) t
     (instance? Date t) (.toInstant ^Date t)
     (instance? CharSequence t) (Instant/parse t)
     (number? t) (Instant/ofEpochMilli (.longValue ^Number t))
@@ -302,34 +304,38 @@
   [{:keys [source-provider role-arn http-client session-name]
     :or {session-name (str (System/currentTimeMillis))
          http-client (aws/default-http-client)}}]
-  (let [sts-request (cond-> {:api :sts
-                             :http-client http-client}
-                      source-provider (assoc :credentials-provider source-provider))
-        sts-client (aws/client sts-request)]
-    (reify
-      creds/CredentialsProvider
-      (fetch [_]
-        (let [req {:op :AssumeRole
-                   :request {:RoleArn role-arn
-                             :RoleSessionName session-name}}
-              resp (aws/invoke sts-client req)
-              _ (when (:cognitect.anomalies/category resp)
-                  (throw (ex-info (format "AWS %s failed %s"
-                                          (name (:op req))
-                                          (or (:cognitect.anomalies/message resp)
-                                              (some-> resp :cognitect.anomalies/category name)
-                                              "unknown error"))
-                                  {:origin resp})))
-              creds (:Credentials resp)
-              valid-creds (valid-credentials
-                            {:aws/access-key-id (:AccessKeyId creds)
-                             :aws/secret-access-key (:SecretAccessKey creds)
-                             :aws/session-token (:SessionToken creds)
-                             :aws/expiration (some-> creds :Expiration (->instant))
-                             :cognitect.aws.credentials/ttl (calculate-ttl creds)}
-                            "assumed role")]
-          (when valid-creds (log-expiration creds))
-          valid-creds))
-      creds/Stoppable
-      (-stop [_]
-        (-stop sts-client)))))
+  (let [sts-client (aws/client (cond-> {:api :sts
+                                        :http-client http-client}
+                                 source-provider (assoc :credentials-provider source-provider)))
+        provider (reify
+                   creds/CredentialsProvider
+                   (fetch [_]
+                     (let [req {:op :AssumeRole
+                                :request {:RoleArn role-arn
+                                          :RoleSessionName session-name}}
+                           resp (aws/invoke sts-client req)
+                           _ (when (:cognitect.anomalies/category resp)
+                               (throw (ex-info (format "AWS %s failed %s"
+                                                 (name (:op req))
+                                                 (or (:cognitect.anomalies/message resp)
+                                                     (some-> resp :cognitect.anomalies/category name)
+                                                     "unknown error"))
+                                               {:origin resp})))
+                           creds (:Credentials resp)
+                           valid-creds (valid-credentials
+                                         {:aws/access-key-id (:AccessKeyId creds)
+                                          :aws/secret-access-key (:SecretAccessKey creds)
+                                          :aws/session-token (:SessionToken creds)
+                                          :aws/expiration (some-> creds :Expiration (->instant) (.minus 50 ChronoUnit/MINUTES));; correct
+                                          :cognitect.aws.credentials/ttl (calculate-ttl {:Expiration (-> creds :Expiration (->instant) (.minus 50 ChronoUnit/MINUTES))})};; correct
+                                         "assumed role")]
+                       (println valid-creds) ;; correct
+                       (when valid-creds (log-expiration creds))
+                       valid-creds))
+                   creds/Stoppable
+                   (-stop [_]
+                     (-stop sts-client)))]
+    (reconfigurable-credentials-provider {:http-client http-client
+                                          :providers [provider]
+                                          :cache-provider? true
+                                          :cache-credentials? true})))

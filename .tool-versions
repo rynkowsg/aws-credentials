@@ -5,7 +5,7 @@ asdf-plugin-manager 1.5.0
 babashka 1.12.208
 
 # https://github.com/CircleCI-Public/circleci-cli/releases
-circleci-cli 0.1.33163
+circleci-cli 1.9.0
 
 # https://github.com/clj-kondo/clj-kondo/releases
 clj-kondo 2025.09.22

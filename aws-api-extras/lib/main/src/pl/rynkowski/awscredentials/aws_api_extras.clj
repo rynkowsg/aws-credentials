@@ -208,6 +208,44 @@
       creds/Stoppable
       (-stop [_] (run! -stop providers)))))
 
+(defn assumed-role-credentials-provider
+  "Returns a CredentialsProvider that calls STS:AssumeRole using `source-provider`.
+   Every `fetch` calls STS. `default-assumed-role-credentials-provider` caches
+   the credentials and renews them before they expire."
+  [{:keys [source-provider role-arn http-client session-name]
+    :or {session-name (str (System/currentTimeMillis))}}]
+  (let [http-client' (or http-client (aws/default-http-client))
+        sts-request (cond-> {:api :sts
+                             :http-client http-client'}
+                      source-provider (assoc :credentials-provider source-provider))
+        sts-client (aws/client sts-request)]
+    (reify
+      creds/CredentialsProvider
+      (fetch [_]
+        (let [req {:op :AssumeRole
+                   :request {:RoleArn role-arn
+                             :RoleSessionName session-name}}
+              resp (aws/invoke sts-client req)
+              _ (when (:cognitect.anomalies/category resp)
+                  (throw (ex-info (format "AWS %s failed %s"
+                                          (name (:op req))
+                                          (or (:cognitect.anomalies/message resp)
+                                              (some-> resp :cognitect.anomalies/category name)
+                                              "unknown error"))
+                                  {:origin resp})))
+              creds (:Credentials resp)
+              valid-creds (valid-credentials
+                            {:aws/access-key-id (:AccessKeyId creds)
+                             :aws/secret-access-key (:SecretAccessKey creds)
+                             :aws/session-token (:SessionToken creds)
+                             :cognitect.aws.credentials/ttl (calculate-ttl creds)}
+                            "assumed role")]
+          (when valid-creds (log-expiration creds))
+          valid-creds))
+      creds/Stoppable
+      (-stop [_]
+        (-stop sts-client)))))
+
 ;; Helper: build the “default-v2” chain from a config map (no side effects)
 (defn- build-default-provider*
   [{:keys [cache-provider? cache-credentials? providers]}]
@@ -235,6 +273,33 @@
     (build-default-provider* {:cache-provider? cache-provider?
                               :cache-credentials? cache-credentials?
                               :providers providers})))
+
+(defn default-assumed-role-credentials-provider
+  "Returns `assumed-role-credentials-provider` wrapped with `cached-credentials-with-auto-refresh`,
+  so the role credentials renew before they expire. Takes the same options.
+
+  Without `:source-provider` the role is assumed with the credentials of
+  `default-credentials-provider-v2`. That source is created here, so `-stop` stops it too.
+  A `:source-provider` passed in is left for the caller to stop."
+  [{:keys [http-client source-provider] :as opts}]
+  (let [http-client' (or http-client (aws/default-http-client))
+        own-source (when-not source-provider
+                     (default-credentials-provider-v2 {:http-client http-client'
+                                                       :cache-provider? true
+                                                       :cache-credentials? true}))
+        source-provider' (or source-provider own-source)
+        assumed (-> opts
+                    (assoc :http-client http-client'
+                           :source-provider source-provider')
+                    (assumed-role-credentials-provider)
+                    (cached-credentials-with-auto-refresh))]
+    (reify
+      creds/CredentialsProvider
+      (fetch [_] (fetch assumed))
+      creds/Stoppable
+      (-stop [_]
+        (-stop assumed)
+        (some-> own-source -stop)))))
 
 (defprotocol ReconfigurableCredentials
   (-reconfigure! [this cfg] "Refresh provider using given cfg."))
@@ -296,40 +361,3 @@
                                                       :cache-provider? false}))
   (aws/invoke (aws/client {:api :ssm :credentials-provider provider}) {:op :DescribeParameters})
   (aws/invoke (aws/client {:api :sts :credentials-provider provider}) {:op :GetCallerIdentity}))
-
-(defn assumed-role-credentials-provider
-  "Returns a CredentialsProvider that calls STS:AssumeRole using `source-provider`.
-   Wrapped with cached auto-refresh so creds renew before expiration."
-  [{:keys [source-provider role-arn http-client session-name]
-    :or {session-name (str (System/currentTimeMillis))
-         http-client (aws/default-http-client)}}]
-  (let [sts-request (cond-> {:api :sts
-                             :http-client http-client}
-                      source-provider (assoc :credentials-provider source-provider))
-        sts-client (aws/client sts-request)]
-    (reify
-      creds/CredentialsProvider
-      (fetch [_]
-        (let [req {:op :AssumeRole
-                   :request {:RoleArn role-arn
-                             :RoleSessionName session-name}}
-              resp (aws/invoke sts-client req)
-              _ (when (:cognitect.anomalies/category resp)
-                  (throw (ex-info (format "AWS %s failed %s"
-                                          (name (:op req))
-                                          (or (:cognitect.anomalies/message resp)
-                                              (some-> resp :cognitect.anomalies/category name)
-                                              "unknown error"))
-                                  {:origin resp})))
-              creds (:Credentials resp)
-              valid-creds (valid-credentials
-                            {:aws/access-key-id (:AccessKeyId creds)
-                             :aws/secret-access-key (:SecretAccessKey creds)
-                             :aws/session-token (:SessionToken creds)
-                             :cognitect.aws.credentials/ttl (calculate-ttl creds)}
-                            "assumed role")]
-          (when valid-creds (log-expiration creds))
-          valid-creds))
-      creds/Stoppable
-      (-stop [_]
-        (-stop sts-client)))))

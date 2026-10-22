@@ -215,13 +215,26 @@
     (chain-credentials-provider-v2 {:providers (->> providers (map creds-cache-fn))
                                     :cache-provider? cache-provider?})))
 
+(defn default-providers
+  "Returns the providers of `cognitect.aws.credentials/default-credentials-provider`, in the same order."
+  [http-client]
+  [(environment-credentials-provider)
+   (system-property-credentials-provider)
+   (profile-credentials-provider)
+   (container-credentials-provider http-client)
+   (instance-profile-IMDSv2-credentials-provider http-client)
+   #_{:clj-kondo/ignore [:deprecated-var]}
+   (instance-profile-credentials-provider http-client)])
+
 (defn default-credentials-provider-v2
   "Variant of `cognitect.aws.credentials/default-credentials-provider` allowing to toggle caching.
   Both credentials cache and providers cache can be enabled or disabled."
   [{:keys [http-client cache-provider? cache-credentials?]}]
-  (build-default-provider* {:http-client http-client
-                            :cache-provider? cache-provider?
-                            :cache-credentials? cache-credentials?}))
+  (let [http-client' (or http-client (aws/default-http-client))
+        providers (default-providers http-client')]
+    (build-default-provider* {:cache-provider? cache-provider?
+                              :cache-credentials? cache-credentials?
+                              :providers providers})))
 
 (defprotocol ReconfigurableCredentials
   (-reconfigure! [this cfg] "Refresh provider using given cfg."))
@@ -232,16 +245,12 @@
 (defn reconfigurable-credentials-provider
   [{:keys [http-client cache-provider? cache-credentials? providers] :as _cfg
     :or {cache-provider? true cache-credentials? true}}]
-  (let [cfg' {:http-client (or http-client (aws/default-http-client))
+  (let [http-client' (or http-client (aws/default-http-client))
+        providers' (or providers (default-providers http-client'))
+        cfg' {:http-client http-client'
               :cache-provider? cache-provider?
               :cache-credentials? cache-credentials?
-              :providers (or providers [(environment-credentials-provider)
-                                        (system-property-credentials-provider)
-                                        (profile-credentials-provider)
-                                        (container-credentials-provider http-client)
-                                        (instance-profile-IMDSv2-credentials-provider http-client)
-                                        #_{:clj-kondo/ignore [:deprecated-var]}
-                                        (instance-profile-credentials-provider http-client)])}
+              :providers providers'}
         state* (atom {:cfg cfg'
                       :prov (build-default-provider* cfg')})]
     (reify

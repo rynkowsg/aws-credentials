@@ -269,52 +269,25 @@
     :or {cache-provider? true cache-credentials? true}}]
   (let [http-client' (or http-client (aws/default-http-client))
         providers' (or providers (default-providers http-client'))
-        cfg' {:http-client http-client'
-              :cache-provider? cache-provider?
-              :cache-credentials? cache-credentials?
-              :providers providers'}
-        state* (atom {:cfg cfg'
-                      :prov (build-default-provider* cfg')})]
+        cfg* (atom {:http-client http-client
+                    :cache-provider? cache-provider?
+                    :cache-credentials? cache-credentials?
+                    :providers providers'})
+        r (refreshable-credentials-provider #(build-default-provider* @cfg*))]
     (reify
       creds/CredentialsProvider
-      (fetch [_]
-        (when-let [p (:prov @state*)]
-          (fetch p)))
+      (fetch [_] (fetch r))
 
       RefreshableCredentials
-      (-refresh! [_]
-        (let [[old _] (swap-vals! state* (fn [s] (let [cfg (:cfg s)
-                                                       np (build-default-provider* cfg)]
-                                                   {:cfg cfg :prov np})))]
-          (when-let [op (:prov old)]
-            (try
-              (-stop ^creds/Stoppable op)
-              (catch Throwable t
-                (log/warn t "Error stopping previous credentials provider"))))
-          :ok))
+      (-refresh! [_] (-refresh! r))
 
       ReconfigurableCredentials
       (-reconfigure! [_ new-cfg]
-        (if (= new-cfg (:cfg @state*))
-          :no-op
-          (let [[old _] (swap-vals! state* (fn [old] (let [cfg' (merge (:cfg old) new-cfg)
-                                                           np (build-default-provider* cfg')]
-                                                       {:cfg cfg' :prov np})))]
-            (when-let [op (:prov old)]
-              (try
-                (-stop ^creds/Stoppable op)
-                (catch Throwable t
-                  (log/warn t "Error stopping previous credentials provider"))))
-            :ok)))
+        (let [[old new] (swap-vals! cfg* merge new-cfg)]
+          (if (= old new) :no-op (-refresh! r))))
 
       creds/Stoppable
-      (-stop [_]
-        (let [[old _] (swap-vals! state* (fn [s] (assoc s :prov nil)))]
-          (when-let [op (:prov old)]
-            (try
-              (-stop ^creds/Stoppable op)
-              (catch Throwable t
-                (log/warn t "Error during provider stop"))))))
+      (-stop [_] (-stop r))
       #_:end)))
 
 (comment

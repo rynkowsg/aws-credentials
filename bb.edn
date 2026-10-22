@@ -38,7 +38,7 @@
          deploy (let [mvn-repo (or (first *command-line-args*) "local")] ;; local, clojars, sonatype-releases, sonatype-snapshots
                   (println (format "CMD: MVN_REPO=%s lein deploy-all\n---" mvn-repo))
                   (shell {:extra-env {"MVN_REPO" mvn-repo}} "lein deploy-all"))
-         deploy:local (shell "bb deploy local")
+         deploy:local (shell "lein install-all")
          deploy:snapshot (shell "bb deploy sonatype-snapshots")
          deploy:release (do (shell "bb deploy clojars")
                             (shell "bb deploy sonatype-releases"))

@@ -242,6 +242,28 @@
 (defprotocol RefreshableCredentials
   (-refresh! [this] "Refresh provider using previously set config."))
 
+(defn refreshable-credentials-provider
+  "Wraps the provider returned by `build-fn` (a no-arg fn). `-refresh!` calls
+  `build-fn` again and stops the previous provider."
+  [build-fn]
+  (let [prov* (atom (build-fn))
+        stop! (fn [p] (try (-stop p)
+                           (catch Throwable t
+                             (log/warn t "Error stopping previous credentials provider"))))]
+    (reify
+      creds/CredentialsProvider
+      (fetch [_] (some-> @prov* fetch))
+      RefreshableCredentials
+      (-refresh! [_]
+        ;; Build outside the atom, so every provider built here is either current or stopped.
+        (let [[old _] (reset-vals! prov* (build-fn))]
+          (some-> old stop!)
+          :ok))
+      creds/Stoppable
+      (-stop [_]
+        (let [[old _] (reset-vals! prov* nil)]
+          (some-> old stop!))))))
+
 (defn reconfigurable-credentials-provider
   [{:keys [http-client cache-provider? cache-credentials? providers] :as _cfg
     :or {cache-provider? true cache-credentials? true}}]

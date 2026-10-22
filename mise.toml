@@ -1,0 +1,54 @@
+[settings]
+lockfile = true
+
+[tool_alias]
+babashka = "github:babashka/babashka"
+circleci-cli = "aqua:CircleCI-Public/circleci-cli"
+clj-kondo = "github:clj-kondo/clj-kondo"
+clojure = "vfox:jdx/vfox-clojure"
+java = "core:java"
+leiningen = "vfox:jdx/vfox-leiningen"
+yamlfmt = "aqua:google/yamlfmt"
+
+[plugins]
+clojure = "https://github.com/jdx/vfox-clojure.git#11b1715c8688546c3178acf7e250479051bfe02e"
+leiningen = "https://github.com/jdx/vfox-leiningen.git#a6770eacab2f92596e31f50946fdb06c71ac1ffe"
+
+[tools]
+# releases: https://github.com/babashka/babashka/releases
+# changelog: https://github.com/babashka/babashka/blob/master/CHANGELOG.md
+babashka = { version = "1.12.208", depends = ["java"] }
+
+# releases: https://github.com/CircleCI-Public/circleci-cli/releases
+circleci-cli = "1.9.0"
+
+# releases: https://github.com/clj-kondo/clj-kondo/releases
+# changelog: https://github.com/clj-kondo/clj-kondo/blob/master/CHANGELOG.md
+clj-kondo = "2025.09.22"
+
+# versions: https://github.com/clojure/brew-install/releases
+# changelog: https://clojure.org/releases/tools#_releases
+clojure = "1.12.3.1577"
+
+# releases: https://github.com/corretto/corretto-21/releases
+# changelog: https://github.com/corretto/corretto-21/blob/develop/CHANGELOG.md
+java = "corretto-21.0.8.9.1"
+
+# releases: https://codeberg.org/leiningen/leiningen/releases
+# changelog: https://codeberg.org/leiningen/leiningen/src/branch/main/NEWS.md
+leiningen = { version = "2.12.0", depends = ["java"] }
+
+# releases: https://github.com/google/yamlfmt/releases
+yamlfmt = "0.17.2"
+
+[tasks."deps"]
+run = "mise outdated --bump"
+[tasks."deps:upgrade"]
+run = "mise outdated --bump && mise upgrade --bump --interactive"
+
+# `mise lock` only updates or adds entries, it never drops them. After renaming a
+# tool key the entry under the old name stays in the lockfile, so recreate the
+# file from scratch instead of refreshing it in place.
+[tasks."lock:recreate"]
+description = "Recreate mise.lock from scratch"
+run = "rm -f mise.lock && mise lock"

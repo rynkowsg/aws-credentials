@@ -4,10 +4,11 @@ constants:
   workdir: &workdir "~/code" # location where we fetch and compile code
 
 orbs:
-  # orb info: https://circleci.com/developer/orbs/orb/rynkowsg/asdf
-  asdf: rynkowsg/asdf@0.2.0
   # orb info: https://circleci.com/developer/orbs/orb/rynkowsg/checkout
   checkout: rynkowsg/checkout@0.3.1
+  # orb info: https://circleci.com/developer/orbs/orb/rynkowsg/mise
+  # changelog: https://github.com/rynkowsg/mise-orb/blob/main/CHANGELOG.md
+  mise: rynkowsg/mise@0.1.1
   # local inline orbs
   local_executors:
     executors:
@@ -44,51 +45,16 @@ orbs:
               paths: [~/.deps.clj, ~/.gitlibs, .lein/self-installs, ~/.m2/repository, .cpcache, .clj-kondo/.cache]
               key: deps-{{ arch }}-{{ checksum "<<parameters.checksum_file>>" }}
 
-commands:
-  asdf_setup:
-    steps:
-      - asdf/install: {version: 0.15.0}
-      - asdf/cache_restore:
-          find_args: ". -name '.tool-versions' -o -name '.plugin-versions'"
-      - run:
-          name: asdf - add plugins & install tools
-          command: |
-            set -euo pipefail
-            # install asdf-plugin-manager at first
-            asdf plugin-add asdf-plugin-manager https://github.com/asdf-community/asdf-plugin-manager.git
-            asdf install asdf-plugin-manager
-            # install other tools (first Java then rest)
-            asdf-plugin-manager add java && asdf install java
-            asdf-plugin-manager add babashka && asdf install babashka
-            asdf-plugin-manager add clj-kondo && asdf install clj-kondo
-            asdf-plugin-manager add clojure && asdf install clojure
-            asdf-plugin-manager add lein && asdf install lein
-            asdf-plugin-manager add yamlfmt && asdf install yamlfmt
-            # java specific
-            . ~/.asdf/plugins/java/set-java-home.bash
-            echo ". ~/.asdf/plugins/java/set-java-home.bash" >> $BASH_ENV
-            echo "JAVA_HOME=$(asdf where java)" >> $BASH_ENV
-            # review all tools installed
-            printf "%s\n" ""
-            printf "%s\n" "--------------------"
-            printf "%s\n" " Installed versions"
-            printf "%s\n" "--------------------"
-            printf "%s\n" ""
-            bb --version
-            clj-kondo --version
-            clojure --version
-            java --version
-            lein --version
-            yamlfmt --version
-      - asdf/cache_save
-
 jobs:
   main:
     executor: local_executors/docker_base_small
     working_directory: *workdir
     steps:
       - checkout/checkout: {depth: 2} # need `depth: 2` for filtering with `base-revision: main~1`
-      - asdf_setup
+      - mise/setup:
+          mise_version: v2026.10.11 # https://github.com/jdx/mise/releases
+          # java is here because babashka and clojure need it.
+          tools: babashka java clj-kondo clojure yamlfmt
       - local_clj/cache_restore
       - run: bb lint:yml
       - run: bb lint:clj
